@@ -19,7 +19,6 @@ class InteractiveImageProjectApp : public App {
     Rectf getRectf(glm::vec2 startingPoint, glm::vec2 size, glm::vec2 scale = glm::vec2(1.f, 1.f));
     
     gl::TextureRef      mTexture;
-    
     gl::TextureRef      mTexTwirlFromSurface;
     
     ci::Surface8u       mSurface;
@@ -53,18 +52,14 @@ void InteractiveImageProjectApp::setup()
 
 void InteractiveImageProjectApp::twirl(Surface8u *surface, Area area, float maxAngle)
 {
-    // clone the surface, or any changes make to *surface will affect directly on the variable
     ci::Surface8u inputSurface = surface->clone();
     
     ci::Surface::Iter inputIter(inputSurface.getIter());
     ci::Surface::Iter outputIter(surface->getIter(area));
     
-    // get max radius. usually diagnal distance
-    
     float maxDistance = ci::length((glm::vec2)area.getSize())/mTwirl;
     
     glm::vec2 mid = (area.getUL() + area.getLR()) / 2;
-    
     
     while( inputIter.line() && outputIter.line() ) {
         while( inputIter.pixel() && outputIter.pixel() ) {
@@ -104,8 +99,6 @@ void InteractiveImageProjectApp::mouseDown( MouseEvent event )
 
 void InteractiveImageProjectApp::update()
 {
-    
-    
 }
 
 void InteractiveImageProjectApp::draw()
