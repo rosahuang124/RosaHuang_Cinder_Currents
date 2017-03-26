@@ -23,6 +23,7 @@ class HangManGuestApp : public App {
     void drawLine();
     void drawAnswer();
     void drawMan();
+    void gameOver();
     
     string modifyAnswer(string answer);
     
@@ -65,7 +66,7 @@ void HangManGuestApp::setup()
 {
     // initialize net connection---------------------
     listener.setup(3000); // listener port
-    host = "149.31.207.68"; // judge's IP
+    host = "192.168.1.255"; // judge's IP
     sender.setup(host,4000,true);
     
     osc::Message    askID;
@@ -74,7 +75,7 @@ void HangManGuestApp::setup()
     sender.sendMessage(askID);
     
     setWindowSize(800, 600);
-    answerFont = Font(loadAsset( "Comic Sans MS Bold.ttf"), 60);
+    answerFont = Font(loadAsset( "Comic Sans MS Bold.ttf"), 40);
     
     bodypart = 0;
     bActivated = false;
@@ -131,17 +132,33 @@ void HangManGuestApp::update()
                 cout<<"bodypart is : " << bodypart <<endl;
                 
                 GO = message.getArgAsInt32(5);
-                cout<<"rightAnswer is : " << rightAnswer <<endl;
+                cout<<"GO is : " << GO <<endl;
                 
                 bActivated = true;
+            }else
+                
+            {
+                //can still receive the data when I am not the current player
+                answerLength = message.getArgAsInt32(1);
+                cout<<"answerLength is : " << answerLength <<endl;
+                
+                tempRightAnswer = message.getArgAsString(2);
+                cout<<"rightAnswer is : " << tempRightAnswer <<endl;
+                
+                wrongAnswer.setWrongAnswers(message.getArgAsString(3));
+                cout<<"wrongAnswer is : " << wrongAnswer.getWrongAnswers() <<endl;
+                
+                bodypart = message.getArgAsInt32(4);
+                cout<<"bodypart is : " << bodypart <<endl;
+                
+                GO = message.getArgAsInt32(5);
+                cout<<"GO is : " << GO <<endl;
             }
         }
     }
     if (bActivated) {
         inputArea.enableTextField();
-//        cout << "====="<< rightAnswer << endl;
     }
-    
     
 }
 
@@ -182,11 +199,30 @@ void HangManGuestApp::drawMan()
     
     // receive int bodypart
     for (int i=0; i < bodypart; i++){
-        gl::draw (mBodyPart[i],Rectf(525, 110, 675, 400));
+        if (bodypart < 9){
+            gl::draw (mBodyPart[i],Rectf(525, 110, 675, 400));
+        }else if (bodypart == 9) {
+            gl::draw (mBodyPart[0],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[1],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[2],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[3],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[4],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[5],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[6],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[7],Rectf(525, 110, 675, 400));
+            gl::draw (mBodyPart[8],Rectf(525, 110, 675, 400));
+            gameOver();
+            inputArea.disableTextField();
+        }
     }
-
 }
 
+void HangManGuestApp::gameOver()
+{
+    gl::color(ci::Color(1.f, 0, 0));
+    gl::drawSolidRect(Rectf(170, 230, 620, 380));
+    gl::drawString("G A M E  O V E R", ci::vec2(220.f, 280.f),Color::white(), answerFont);
+}
 
 void HangManGuestApp::draw()
 {
@@ -200,13 +236,17 @@ void HangManGuestApp::draw()
     gl::color(ci::Color(0.6f,0.5f, 0.4f));
     gl::drawSolidRect(Rectf(480, 440, 800, 600));
     
-    
     inputArea.draw();
     wrongAnswer.draw();
-    rightAnswer = modifyAnswer(tempRightAnswer);
     
-    drawMan();
+    rightAnswer = modifyAnswer(tempRightAnswer);
     drawAnswer();
+    
+    //start drawing when there is wrong answer
+//    if (wrongAnswer.getWrongAnswers() != "") {
+//        drawMan();
+//    }
+    drawMan();
 }
 
 void HangManGuestApp::mouseDown(MouseEvent event)
@@ -311,12 +351,12 @@ void HangManGuestApp::keyDown(KeyEvent event)
                         cout << "arg["<<i<<"] is : "<< mMessage.getArgAsInt32(i) <<endl;
                     if(mMessage.getArgType(i) == osc::TYPE_STRING)
                         cout << "arg["<<i<<"] is : "<< mMessage.getArgAsString(i)<<endl;
-                    
                 }
+                
                 bActivated = false;
                 inputArea.reset();
                 inputArea.disableTextField();
-                
+
             }
         }
     }
