@@ -66,7 +66,7 @@ void HangManGuestApp::setup()
 {
     // initialize net connection---------------------
     listener.setup(3000); // listener port
-    host = "192.168.1.255"; // judge's IP
+    host = "149.31.138.255"; // judge's IP
     sender.setup(host,4000,true);
     
     osc::Message    askID;
