@@ -29,6 +29,8 @@ class uiProjectApp : public App {
     po::scene::SceneRef centralCircleScene;
     po::scene::SceneRef circleScene;
     
+    CentralCircleRef mCentralCircle;
+    
     ci::Color mBackgroundColor = ci::Color::hex(0xF4ED98);
  
 
@@ -47,6 +49,7 @@ void uiProjectApp::setup()
     
     centralCircleScene = po::scene::Scene::create(CentralCircle::create());
     circleScene = po::scene::Scene::create(CircleSample::create());
+
 }
 
 void uiProjectApp::mouseDown( MouseEvent event )
@@ -57,6 +60,7 @@ void uiProjectApp::update()
 {
     mScene->update();
     circleScene->update();
+
 }
 
 void uiProjectApp::draw()

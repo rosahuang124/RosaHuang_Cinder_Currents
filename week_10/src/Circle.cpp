@@ -13,6 +13,7 @@ CircleRef Circle::create(std::string name, ci::Color color)
 
 void Circle::setup(std::string name, ci::Color color)
 {
+ 
     mCircle = Shape::createCircle(65.f);
     mCircleColor = color;
     mCircle->setFillColor(color);
@@ -30,8 +31,10 @@ void Circle::setup(std::string name, ci::Color color)
     mTextBox = TextBox::create(textbox);
     mTextBox->setDrawBounds(false);
     mTextBox->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mTextBox->setFillColor(0.3f, 0.3f, 0.3f);
     addChild(mTextBox);
-//    mTextBox->setPosition(5, 5);
+
+
     
 
 }
@@ -39,7 +42,12 @@ void Circle::setup(std::string name, ci::Color color)
 void Circle::rotationAnimation()
 {
     mCircle->setRotation(0.0f);
-    ci::app::timeline().apply(&mCircle->getRotationAnim(), ci::toRadians(360.f), 1.5);
+    ci::app::timeline().apply(&mCircle->getRotationAnim(), ci::toRadians(360.f), 0.5);
+    
+    mTextBox->setRotation(0.0f);
+    ci::app::timeline().apply(&mTextBox->getRotationAnim(), ci::toRadians(360.f), 0.5);
+    
+    
 }
 
 void Circle::colorAnimation()
@@ -54,5 +62,31 @@ void Circle::scaleAnimation()
 {
     ci::app::timeline().apply(&mCircle->getScaleAnim(), ci::vec2(1.1f, 1.1f), 0.5);
     ci::app::timeline().appendTo(&mCircle->getScaleAnim(), ci::vec2(1.0f, 1.0f), 0.5);
+    ci::app::timeline().apply(&mTextBox->getScaleAnim(), ci::vec2(1.1f, 1.1f), 0.5);
+    ci::app::timeline().appendTo(&mTextBox->getScaleAnim(), ci::vec2(1.0f, 1.0f), 0.5);
 }
+
+//void Circle::onMouseEvent(po::scene::MouseEvent &event)
+//{
+//    switch (event.getType()) {
+//        case po::scene::MouseEvent::DOWN_INSIDE:
+//            mIsActivated = !mIsActivated;
+//            if (mIsActivated){
+//               
+//                mCircleStateChangeSignal.emit(true);
+//            }else{
+//                
+//                mCircleStateChangeSignal.emit(false);
+//            }
+//            break;
+//        case po::scene::MouseEvent::UP_INSIDE:
+//            
+//            break;
+//        case po::scene::MouseEvent::UP:
+//            
+//            break;
+//        default:
+//            break;
+//    }
+//}
 

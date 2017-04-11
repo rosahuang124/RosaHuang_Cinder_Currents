@@ -22,5 +22,5 @@ private:
     CircleRef mCatCircle;
     CircleRef mBirdCircle;
     CircleRef mRabbitCircle;
-    
+
 };
