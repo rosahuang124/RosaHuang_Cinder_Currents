@@ -11,42 +11,81 @@ CentralCircleRef CentralCircle::create()
 
 void CentralCircle::setup()
 {
-    mCentralCircle = po::scene::Shape::createCircle(200.f);
-    mCentralCircle->setFillColor(mCentralCircleColor);
-    mCentralCircle->setPosition( glm::vec2(187.5f, 253.f) );
-    mCentralCircle->setAlignment(po::scene::Alignment::CENTER_CENTER);
-    addChild(mCentralCircle);
+    bearTexture = ci::gl::Texture::create(ci::loadImage (ci::app::loadAsset("bear.jpg")));
+    dinosaurTexture = ci::gl::Texture::create(ci::loadImage (ci::app::loadAsset("dinosaur.jpg")));
+    hedgehogTexture = ci::gl::Texture::create(ci::loadImage (ci::app::loadAsset("hedgehog.jpg")));
+    tigerTexture = ci::gl::Texture::create(ci::loadImage (ci::app::loadAsset("tiger.jpg")));
+
+//    CircleSampleRef checkCircle;
+//    if(checkCircle->bearIsActive() == true)
+//    {
+//        showBear();
+//        std::cout<<"bear is actived"<<std::endl;
+//    }
+    showBear();
 
 }
 
-//void CentralCircle::showDog()
-//{
-//    mMask = Shape::createCircle(60.f);
-//    mMask->setAlignment(po::scene::Alignment::CENTER_CENTER);
-//    
-//    ci::gl::TextureRef dogTexture = ci::gl::Texture::create(ci::loadImage (ci::app::loadAsset("cat.jpg")));
-//    mImage = Image::create(dogTexture);
-//    mImage->setAlignment(po::scene::Alignment::CENTER_CENTER);
-//    addChild(mImage);
-//    setMask(mMask);
-//}
-//
-//void CentralCircle::showCat()
-//{
-//    
-//}
-//
-//void CentralCircle::showBird()
-//{
-//    
-//}
-//
-//void CentralCircle::showRabbit()
-//{
-//    
-//}
-//
-//void CentralCircle::update()
-//{
-//}
+
+
+void CentralCircle::showBear()
+{
+    mMask = po::scene::Shape::createCircle(180.f);
+    mMask->setPosition( glm::vec2(187.5f, 253.f) );
+    mMask->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mMask->setDrawBounds(false);
+    
+    mImage = po::scene::Image::create(bearTexture);
+    mImage->setPosition( glm::vec2(187.5f, 253.f) );
+    mImage->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    addChild(mImage);
+    setMask(mMask);
+
+}
+
+void CentralCircle::showDinosaur()
+{
+    mMask = po::scene::Shape::createCircle(180.f);
+    mMask->setPosition( glm::vec2(187.5f, 253.f) );
+    mMask->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mMask->setDrawBounds(false);
+    
+    mImage = po::scene::Image::create(dinosaurTexture);
+    mImage->setPosition( glm::vec2(187.5f, 253.f) );
+    mImage->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    addChild(mImage);
+    setMask(mMask);
+    
+}
+
+void CentralCircle::showHedgehog()
+{
+    mMask = po::scene::Shape::createCircle(180.f);
+    mMask->setPosition( glm::vec2(187.5f, 253.f) );
+    mMask->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mMask->setDrawBounds(false);
+    
+    mImage = po::scene::Image::create(hedgehogTexture);
+    mImage->setPosition( glm::vec2(187.5f, 253.f) );
+    mImage->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    addChild(mImage);
+    setMask(mMask);
+    
+}
+
+void CentralCircle::showTiger()
+{
+    mMask = po::scene::Shape::createCircle(180.f);
+    mMask->setPosition( glm::vec2(187.5f, 253.f) );
+    mMask->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mMask->setDrawBounds(false);
+    
+    mImage = po::scene::Image::create(tigerTexture);
+    mImage->setPosition( glm::vec2(187.5f, 253.f) );
+    mImage->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    addChild(mImage);
+    setMask(mMask);
+}
+
+
 

@@ -29,10 +29,12 @@ class uiProjectApp : public App {
     po::scene::SceneRef centralCircleScene;
     po::scene::SceneRef circleScene;
     
-    CentralCircleRef mCentralCircle;
+//    CentralCircleRef mCentralCircle;
     
     ci::Color mBackgroundColor = ci::Color::hex(0xF4ED98);
  
+    po::scene::ShapeRef mCentralCircleBg;
+    ci::Color mCentralCircleBgColor = ci::Color::hex(0xFFFFFF);
 
 
 };
@@ -49,6 +51,13 @@ void uiProjectApp::setup()
     
     centralCircleScene = po::scene::Scene::create(CentralCircle::create());
     circleScene = po::scene::Scene::create(CircleSample::create());
+    
+    mCentralCircleBg = po::scene::Shape::createCircle(190.f);
+    mCentralCircleBg->setFillColor(mCentralCircleBgColor);
+    mCentralCircleBg->setPosition( glm::vec2(187.5f, 253.f) );
+    mCentralCircleBg->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mNodeContainer->addChild(mCentralCircleBg);
+
 
 }
 
@@ -60,7 +69,7 @@ void uiProjectApp::update()
 {
     mScene->update();
     circleScene->update();
-
+    centralCircleScene->update();
 }
 
 void uiProjectApp::draw()

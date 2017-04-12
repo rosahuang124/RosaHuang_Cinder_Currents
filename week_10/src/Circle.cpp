@@ -25,7 +25,7 @@ void Circle::setup(std::string name, ci::Color color)
     ci::TextBox textbox = ci::TextBox();
     textbox.text(name);
     textbox.color(ci::Color(1, 1, 1));
-    textbox.size(90, 10);
+    textbox.size(90, 15);
     textbox.setAlignment(ci::TextBox::Alignment::CENTER);
     
     mTextBox = TextBox::create(textbox);
@@ -33,11 +33,44 @@ void Circle::setup(std::string name, ci::Color color)
     mTextBox->setAlignment(po::scene::Alignment::CENTER_CENTER);
     mTextBox->setFillColor(0.3f, 0.3f, 0.3f);
     addChild(mTextBox);
+    
+    getSignal(po::scene::MouseEvent::DOWN_INSIDE).connect(std::bind(&Circle::onMouseEvent, this, std::placeholders::_1));
+    getSignal(po::scene::MouseEvent::UP_INSIDE).connect(std::bind(&Circle::onMouseEvent, this, std::placeholders::_1));
+    getSignal(po::scene::MouseEvent::UP).connect(std::bind(&Circle::onMouseEvent, this, std::placeholders::_1));
+
 
 
     
 
 }
+
+void Circle::onMouseEvent(po::scene::MouseEvent &event)
+{
+    switch (event.getType()) {
+        case po::scene::MouseEvent::DOWN_INSIDE:
+            mIsActivated = !mIsActivated;
+            if (mIsActivated){
+                
+                rotationAnimation();
+                scaleAnimation();
+                colorAnimation();
+                
+                mCircleStateChangeSignal.emit(true);
+            }else{
+                mCircleStateChangeSignal.emit(false);
+            }
+            break;
+        case po::scene::MouseEvent::UP_INSIDE:
+            
+            break;
+        case po::scene::MouseEvent::UP:
+            
+            break;
+        default:
+            break;
+    }
+}
+
 
 void Circle::rotationAnimation()
 {
@@ -66,27 +99,5 @@ void Circle::scaleAnimation()
     ci::app::timeline().appendTo(&mTextBox->getScaleAnim(), ci::vec2(1.0f, 1.0f), 0.5);
 }
 
-//void Circle::onMouseEvent(po::scene::MouseEvent &event)
-//{
-//    switch (event.getType()) {
-//        case po::scene::MouseEvent::DOWN_INSIDE:
-//            mIsActivated = !mIsActivated;
-//            if (mIsActivated){
-//               
-//                mCircleStateChangeSignal.emit(true);
-//            }else{
-//                
-//                mCircleStateChangeSignal.emit(false);
-//            }
-//            break;
-//        case po::scene::MouseEvent::UP_INSIDE:
-//            
-//            break;
-//        case po::scene::MouseEvent::UP:
-//            
-//            break;
-//        default:
-//            break;
-//    }
-//}
+
 
